@@ -1,18 +1,18 @@
 __declspec(naked) void LeaderboardHook_Testing()
 {
 	__asm {
+        cmpwi r3, 0xFB //hxamapp
+		bne skip_patch
+
 		/* create stack frame and save LR, regs */
 		stwu  r1, -0xA0(r1)       
 		mflr  r0
 		stw   r0, 0xA4(r1)      
 		bl    __savegprlr_27
 
-		cmpwi r3, 0xFB //hxamapp
-		bne skip_patch
-
-		lis   r7, 0x000B
-		ori   r7, r7, 0x0025 //dwMessage
-		cmplw r4, r7
+		lis   r0, 0x000B
+		ori   r0, r0, 0x0025 //dwMessage
+		cmplw r4, r0
 		bne   skip_patch
 
 		/* prepare arguments for PatchSessionViews */
@@ -29,6 +29,6 @@ __declspec(naked) void LeaderboardHook_Testing()
 		bl __restgprlr_27 
 
 		skip_patch:
-		bl __restgprlr_27 
+		bl __return_function
 	}
 }

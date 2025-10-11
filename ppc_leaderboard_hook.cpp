@@ -4,16 +4,16 @@ __declspec(naked) void LeaderboardHook_Testing()
         cmpwi r3, 0xFB //hxamapp
 		bne skip_patch
 
+        lis   r0, 0x000B
+		ori   r0, r0, 0x0025 //dwMessage
+		cmplw r4, r0
+		bne   skip_patch
+
 		/* create stack frame and save LR, regs */
 		stwu  r1, -0xA0(r1)       
 		mflr  r0
 		stw   r0, 0xA4(r1)      
 		bl    __savegprlr_27
-
-		lis   r0, 0x000B
-		ori   r0, r0, 0x0025 //dwMessage
-		cmplw r4, r0
-		bne   skip_patch
 
 		/* prepare arguments for PatchSessionViews */
 		lwz  r3, 0x14(r6) // *pViews
